@@ -120,8 +120,8 @@ COPY --chmod=755 scripts/download_presets.sh /
 COPY --chmod=755 scripts/install_custom_nodes.sh /
 
 # Welcome Message
-COPY logo/runpod.txt /etc/runpod.txt
-RUN echo 'cat /etc/runpod.txt' >> /root/.bashrc
+COPY logo/steppod.txt /etc/steppod.txt
+RUN echo 'cat /etc/steppod.txt' >> /root/.bashrc
 RUN echo 'echo -e "\nFor detailed documentation and guides, please visit:\n\033[1;34mhttps://docs.runpod.io/\033[0m and \033[1;34mhttps://blog.runpod.io/\033[0m\n\n"' >> /root/.bashrc
 
 # Set entrypoint to the start script

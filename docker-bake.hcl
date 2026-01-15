@@ -1,5 +1,5 @@
 variable "DOCKERHUB_REPO_NAME" {
-    default = "sombi/comfyui"
+    default = "steppod/comfyui"
 }
 
 variable "PYTHON_VERSION" {
