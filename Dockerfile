@@ -122,7 +122,30 @@ COPY --chmod=755 scripts/install_custom_nodes.sh /
 # Welcome Message
 COPY logo/steppod.txt /etc/steppod.txt
 RUN echo 'cat /etc/steppod.txt' >> /root/.bashrc
-RUN echo 'echo -e "\nFor detailed documentation and guides, please visit:\n\033[1;34mhttps://docs.runpod.io/\033[0m and \033[1;34mhttps://blog.runpod.io/\033[0m\n\n"' >> /root/.bashrc
+RUN echo 'echo -e "Nice to meet you and We are Steppod administrator, Thank you."' >> /root/.bashrc
 
 # Set entrypoint to the start script
-CMD ["/start.sh"]
+CMD ["/bin/bash", "-c", " \
+    echo '[Auto-Mount] /mnt 경로 하위에서 storage 패턴을 찾는 중...'; \
+    \
+    TARGET_MNT=$(find /mnt -maxdepth 1 -name 'storage*' -type d | head -n 1); \
+    \
+    if [ -z \"$TARGET_MNT\" ]; then \
+        echo '[Auto-Mount] 경고: /mnt/storage* 패턴과 일치하는 경로를 찾지 못했습니다.'; \
+        echo '[Auto-Mount] ComfyUI는 내부 기본 경로를 사용합니다.'; \
+    else \
+        echo \"[Auto-Mount] 스토리지 발견: $TARGET_MNT\"; \
+        \
+        # 2. 필수 폴더 생성 \
+        mkdir -p \"$TARGET_MNT/checkpoints\" \"$TARGET_MNT/loras\" \"$TARGET_MNT/vae\" \
+                 \"$TARGET_MNT/controlnet\" \"$TARGET_MNT/upscale_models\" \"$TARGET_MNT/embeddings\" \"$TARGET_MNT/output\"; \
+        \
+        # 3. 설정 파일 생성 (/ComfyUI 위치 확인 필) \
+        printf \"comfyui:\\n    base_path: %s\\n    checkpoints: checkpoints/\\n    loras: loras/\\n    vae: vae/\\n    controlnet: controlnet/\\n    upscale_models: upscale_models/\\n    embeddings: embeddings/\\n\" \"$TARGET_MNT\" > /ComfyUI/extra_model_paths.yaml; \
+        \
+        echo '[Auto-Mount] extra_model_paths.yaml 설정 완료'; \
+    fi; \
+    \
+    # 4. 원래의 시작 스크립트로 제어권 이양 \
+    exec /start.sh \
+"]
