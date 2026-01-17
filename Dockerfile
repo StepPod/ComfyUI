@@ -141,7 +141,7 @@ CMD ["/bin/bash", "-c", " \
                  \"$TARGET_MNT/controlnet\" \"$TARGET_MNT/upscale_models\" \"$TARGET_MNT/embeddings\" \"$TARGET_MNT/output\"; \
         \
         # 3. 설정 파일 생성 (/ComfyUI 위치 확인 필) \
-        printf \"comfyui:\\n    base_path: %s\\n    checkpoints: checkpoints/\\n    loras: loras/\\n    vae: vae/\\n    controlnet: controlnet/\\n    upscale_models: upscale_models/\\n    embeddings: embeddings/\\n\" \"$TARGET_MNT\" > /ComfyUI/extra_model_paths.yaml; \
+        printf \"comfyui:\\n    base_path: %s\\n    checkpoints: checkpoints/\\n    loras: loras/\\n    vae: vae/\\n    controlnet: controlnet/\\n    upscale_models: upscale_models/\\n    embeddings: embeddings/\\n\" \"$TARGET_MNT\" > /workspace/ComfyUI/extra_model_paths.yaml; \
         \
         echo '[Auto-Mount] extra_model_paths.yaml 설정 완료'; \
     fi; \
