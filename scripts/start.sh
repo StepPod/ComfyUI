@@ -132,6 +132,21 @@ start_nginx
 
 execute_script "/pre_start.sh" "Running pre-start script..."
 
+echo '[Auto-Mount] /mnt 경로 하위에서 storage 패턴을 찾는 중...'
+TARGET_MNT=$(find /mnt -maxdepth 1 -name 'storage*' -type d | head -n 1)
+
+if [ -z "$TARGET_MNT" ]; then
+    echo '[Auto-Mount] 경고: /mnt/storage* 패턴과 일치하는 경로를 찾지 못했습니다.'
+else
+    echo "[Auto-Mount] 스토리지 발견: $TARGET_MNT"
+
+    mkdir -p "$TARGET_MNT/checkpoints" "$TARGET_MNT/loras" "$TARGET_MNT/vae" \
+             "$TARGET_MNT/controlnet" "$TARGET_MNT/upscale_models" "$TARGET_MNT/embeddings" "$TARGET_MNT/output" || true
+
+    printf "comfyui:\n    base_path: %s\n    checkpoints: checkpoints/\n    loras: loras/\n    text_encoders: text_encoders/\n    vae: vae/\n    controlnet: controlnet/\n    upscale_models: upscale_models/\n    embeddings: embeddings/\n" "$TARGET_MNT" > /workspace/ComfyUI/extra_model_paths.yaml
+    echo '[Auto-Mount] extra_model_paths.yaml 설정 완료'
+fi
+
 echo "Pod Started"
 
 setup_ssh
