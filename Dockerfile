@@ -136,9 +136,10 @@ CMD ["/bin/bash", "-c", " \
     else \
         echo \"[Auto-Mount] 스토리지 발견: $TARGET_MNT\"; \
         \
+        chmod 777 \"$TARGET_MNT\" 2>/dev/null || true; \
         # 2. 필수 폴더 생성 \
-        mkdir -p \"$TARGET_MNT/checkpoints\" \"$TARGET_MNT/loras\" \"$TARGET_MNT/text_encoders\" \"$TARGET_MNT/vae\" \
-                 \"$TARGET_MNT/controlnet\" \"$TARGET_MNT/upscale_models\" \"$TARGET_MNT/embeddings\" \"$TARGET_MNT/output\"; \
+        mkdir -p \"$TARGET_MNT/checkpoints\" \"$TARGET_MNT/loras\" \"$TARGET_MNT/vae\" \
+                 \"$TARGET_MNT/controlnet\" \"$TARGET_MNT/upscale_models\" \"$TARGET_MNT/embeddings\" \"$TARGET_MNT/output\" || true; \
         \
         # 3. 설정 파일 생성 (/ComfyUI 위치 확인 필) \
         printf \"comfyui:\\n    base_path: %s\\n    checkpoints: checkpoints/\\n    loras: loras/\\n    text_encoders: text_encoders/\\n    vae: vae/\\n    controlnet: controlnet/\\n    upscale_models: upscale_models/\\n    embeddings: embeddings/\\n\" \"$TARGET_MNT\" > /workspace/ComfyUI/extra_model_paths.yaml; \
