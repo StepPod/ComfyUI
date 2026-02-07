@@ -66,7 +66,7 @@ setup_ssh() {
 # Export env vars
 export_env_vars() {
     echo "Exporting environment variables..."
-    printenv | grep -E '^STEPPOD_|^PATH=|^_=' | awk -F = '{ print "export " $1 "=\"" $2 "\"" }' >> /etc/rp_environment
+    printenv | grep -E '^MESHIVE_|^PATH=|^_=' | awk -F = '{ print "export " $1 "=\"" $2 "\"" }' >> /etc/rp_environment
     echo 'source /etc/rp_environment' >> ~/.bashrc
 }
 

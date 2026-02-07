@@ -1,5 +1,5 @@
 variable "DOCKERHUB_REPO_NAME" {
-    default = "steppod/comfyui"
+    default = "meshive/comfyui"
 }
 
 variable "PYTHON_VERSION" {
